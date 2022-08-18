@@ -23,5 +23,5 @@ function plot_cell(xvec,border,k1,k2,x0,L,multiple_cell,j,dt)
         ylabel("t")
         xlim([x0 L])
         drawnow
-    end
+        end
 end
