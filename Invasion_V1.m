@@ -17,7 +17,8 @@ death_count = zeros(length(k2),tests);
 speed_ave = zeros(length(k2),1);
 death_ave = zeros(length(k2),1);
 qtol = 1e-4;
-densityfit_speed_pos = 1;
+densityfit_speed_pos = 0;
+plot_density_snapshot = 0;
 
 % Run test on invasion speed
 for i = 1:length(k2)
@@ -27,7 +28,7 @@ for i = 1:length(k2)
         if ~id
             [final_time1,final_time2,winner,number_ss_1,number_ss_2,...
                 death_count_ss,variance_length,average_density,...
-                instant_speed,border_v] = ...
+                instant_speed,border_v,position_array] = ...
                 current_invasion_function(k1,k2(i),L,N,n,nb,b,d,dt,1);
 
         % If instant death   
@@ -92,4 +93,41 @@ for i = 1:length(k2)
         plot((nb:endj)*dt,p3)
         xlim([nb*dt endj*dt])
     end
+
+    %% Density profile video
+    f = find(~cellfun(@isempty,position_array));
+    f_end = f(end);
+    position_array = position_array(1:f_end);
+    for l=nb:1:f_end
+        xvec = position_array{l};
+        border_ind = xvec(end);
+        xvec = xvec(1:end-1);
+        ave_dens = rolling_average_density(xvec);
+        hold off
+        plot(xvec,[ave_dens ave_dens(end)])
+        ylim([0 20])
+        hold on
+        plot(xvec(border_ind),ave_dens(border_ind),'*r')
+        legend(strcat("$t~=~$",num2str(l*dt)),strcat('$x_{border}~=~$',num2str(xvec(border_ind))),'Interpreter','latex')
+        pause(0.01)
+    end
+
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
