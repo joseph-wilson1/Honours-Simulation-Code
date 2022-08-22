@@ -17,7 +17,7 @@ death_count = zeros(length(k2),tests);
 speed_ave = zeros(length(k2),1);
 death_ave = zeros(length(k2),1);
 qtol = 1e-4;
-densityfit_speed_pos = 1;
+densityfit = 1;
 
 % Run test on invasion speed
 for i = 1:length(k2)
@@ -58,15 +58,15 @@ for i = 1:length(k2)
     % Average speed over all tests.
     speed_ave(i) = mean(speeds(i,:));
     
-    if densityfit_speed_pos
+    if densityfit
 
         % Linear fit of density vs time
         [~,j] = find(average_density);
         endj = j(end);
-        c1 = polyfit((1:endj)*dt,average_density(1,1:endj),1);
-        p1 = polyval(c1,(1:endj)*dt);
-        c2 = polyfit((1:endj)*dt,average_density(2,1:endj),1);
-        p2 = polyval(c2,(1:endj)*dt);
+        c1 = polyfit(1:endj,average_density(1,1:endj),1);
+        p1 = polyval(c1,1:endj);
+        c2 = polyfit(1:endj,average_density(2,1:endj),1);
+        p2 = polyval(c2,1:endj);
     
         % Plot density fit vs time.
         figure(i)
@@ -86,10 +86,6 @@ for i = 1:length(k2)
         % Plot border position
         figure(3)
         plot(((nb):endj)*dt,border_v(1:speed_endj+1))
-        c3 = polyfit((nb:endj)*dt,border_v(1:speed_endj+1),1);
-        p3 = polyval(c3,(nb:endj)*dt);
-        hold on
-        plot((nb:endj)*dt,p3)
-        xlim([nb*dt endj*dt])
+        c3 = polyfit()
     end
 end

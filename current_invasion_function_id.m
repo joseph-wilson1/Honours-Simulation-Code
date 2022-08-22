@@ -1,4 +1,6 @@
-function [final_time1,final_time2,winner,number_ss_1,number_ss_2,death_count_ss,variance_length,average_density] = current_invasion_function_id(k1,k2,L,N,n,nb,b,d,dt,multiple_cell)
+function [final_time1,final_time2,winner,number_ss_1,number_ss_2,...
+    death_count_ss,variance_length,average_density, instant_speed,border_v]...
+    = current_invasion_function_id(k1,k2,L,N,n,nb,b,d,dt,multiple_cell)
 %%% Inputs:
 % k1,k2 are spring constants for pop1 and pop2 resp., L is right spatial boundary, 
 % N is number of cells, n is number of sims, nb is numbers of sims with hard border,
@@ -13,7 +15,11 @@ function [final_time1,final_time2,winner,number_ss_1,number_ss_2,death_count_ss,
 % number of dead cells in simulation during steady state, variance_length:
 % average variance in length of cells in simulation, 
 % average_density: 2x(n+1) vector, cell i,j contains average density of 
-% population i at time-step j. avg density calculated N(t)_i/L_i. 
+% population i at time-step j. avg density calculated N(t)_i/L_i, 
+% instant_speed: 1xn vector, current speed at each time step t,
+% calculated as v(t) = (x(border,t)-x(border,t-dt))/dt, 
+% border_v: 1x(n-nb+1) vector, border position at each time-step of
+% invasion.
 
 % Set up parameters for simulation.
 x0 = 0;
@@ -31,6 +37,8 @@ number = zeros(2,n+1);
 death_count = zeros(2,n+1);
 var_l = zeros(n+1,1);
 average_density = zeros(2,n+1);
+instant_speed = zeros(1,n-nb);
+border_v = zeros(1,n-nb+1);
 
 % Density burn number.
 burn = nb;
@@ -137,6 +145,8 @@ if multiple_cell
     dead = [D1 D2];
     border = N1+1;
     N = N1+N2;
+    old_border_loc = xvec(border);
+    border_v(1,1) = xvec(border);
 end
 
 % Simulation without wall.
@@ -146,21 +156,25 @@ for j=nb+1:n
     xvec_new = hookfun2(xvec,kvec,avec,dt,eta); % Movement
     xvec = border_test(xvec_new); % Position check
 
+    [xvec,kvec,avec,dead,N,border] = stochastic_birth(xvec,birth_length_tol,b,kvec,avec,dead,multiple_cell,border,t); % Stochastic birth
+    [xvec,kvec,avec,N,border] = stochastic_death2(N,d,xvec,kvec,avec,border); % Stochastic death
+
     % Decide if a population has 'won'. Record time of winning invasion.
     if abs(border-1) < tol
         final_time1 = (j-nb)*dt;
         final_time2 = 0;
         winner=1;
+        instant_speed(1,j-nb) = (xvec(border)-old_border_loc)/dt;
+        border_v(1,(j+1)-nb) = xvec(border);
         break
     elseif abs(border-(N+1)) < tol
         final_time1 = 0;
         final_time2 = (j-nb)*dt;
         winner=2;
+        instant_speed(1,j-nb) = (xvec(border)-old_border_loc)/dt;
+        border_v(1,(j+1)-nb) = xvec(border);
         break
     end
-
-    [xvec,kvec,avec,dead,N,border] = stochastic_birth(xvec,birth_length_tol,b,kvec,avec,dead,multiple_cell,border,t); % Stochastic birth
-    [xvec,kvec,avec,N,border] = stochastic_death2(N,d,xvec,kvec,avec,border); % Stochastic death
     
     % Record information at end of time-step.
     if multiple_cell
@@ -170,6 +184,8 @@ for j=nb+1:n
         death_count(2,j+1) = sum(dead(border:end));
         average_density(1,j+1) = number(1,j+1)/xvec(border);
         average_density(2,j+1) = number(2,j+1)/(L-xvec(border));
+        instant_speed(1,j-nb) = (xvec(border)-old_border_loc)/dt;
+        border_v(1,(j+1)-nb) = xvec(border);
     else
         number(1,j+1) = N;
         death_count(1,j+1) = sum(dead);
@@ -188,6 +204,9 @@ for j=nb+1:n
     if plot_on
         plot_cell(xvec,border,k1,k2,x0,L,multiple_cell,j,dt)
     end
+
+    % Set old border location
+    old_border_loc = xvec(border);
 end
 
 % End of simulation.
