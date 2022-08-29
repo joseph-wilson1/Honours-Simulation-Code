@@ -1,5 +1,5 @@
 function [final_time1,final_time2,winner,number_ss_1,number_ss_2,...
-    death_count_ss,variance_length,average_density, instant_speed,border_v]...
+    death_count_ss,variance_length,average_density, instant_speed,border_v,position_array]...
     = current_invasion_function_id(k1,k2,L,N,n,nb,b,d,dt,multiple_cell)
 %%% Inputs:
 % k1,k2 are spring constants for pop1 and pop2 resp., L is right spatial boundary, 
@@ -20,6 +20,9 @@ function [final_time1,final_time2,winner,number_ss_1,number_ss_2,...
 % calculated as v(t) = (x(border,t)-x(border,t-dt))/dt, 
 % border_v: 1x(n-nb+1) vector, border position at each time-step of
 % invasion.
+% position_array: 1x(length(snapshots)) cell array. Each cell stores a vector
+% of each cell position at t=snapshot*dt. Final element in each vector is
+% border index.
 
 % Set up parameters for simulation.
 x0 = 0;
@@ -39,6 +42,7 @@ var_l = zeros(n+1,1);
 average_density = zeros(2,n+1);
 instant_speed = zeros(1,n-nb);
 border_v = zeros(1,n-nb+1);
+position_array = cell(1,n);
 
 % Density burn number.
 burn = nb;
@@ -135,6 +139,9 @@ for j=1:nb
     if plot_on
         plot_cell([X1(1:end-1) X2],N1+1,k1,k2,x0,L,1,j,dt)
     end
+
+    % Save cell positions
+    position_array{j} = [X1(1:end-1) X2 N1+1];
 end
 
 % If two populations, concatenate into single heterogeneous arrays.
@@ -161,16 +168,16 @@ for j=nb+1:n
 
     % Decide if a population has 'won'. Record time of winning invasion.
     if abs(border-1) < tol
-        final_time1 = (j-nb)*dt;
-        final_time2 = 0;
-        winner=1;
+        final_time1 = 0;
+        final_time2 = (j-nb)*dt;
+        winner=2;
         instant_speed(1,j-nb) = (xvec(border)-old_border_loc)/dt;
         border_v(1,(j+1)-nb) = xvec(border);
         break
     elseif abs(border-(N+1)) < tol
-        final_time1 = 0;
-        final_time2 = (j-nb)*dt;
-        winner=2;
+        final_time1 = (j-nb)*dt;
+        final_time2 = 0;
+        winner=1;
         instant_speed(1,j-nb) = (xvec(border)-old_border_loc)/dt;
         border_v(1,(j+1)-nb) = xvec(border);
         break
@@ -207,6 +214,9 @@ for j=nb+1:n
 
     % Set old border location
     old_border_loc = xvec(border);
+
+    % Save cell positions.
+    position_array{j} = [xvec border];
 end
 
 % End of simulation.

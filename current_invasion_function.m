@@ -17,7 +17,7 @@ function [final_time1,final_time2,winner,number_ss_1,number_ss_2,...
 % average variance in length of cells in simulation, 
 % average_density: 2x(n+1) vector, cell i,j contains average density of 
 % population i at time-step j. avg density calculated N(t)_i/L_i. 
-% instant_speed: 1xn vector, current speed at each time step t,
+% instant_speed: 1x(n-nb) vector, current speed at each time step t,
 % calculated as v(t) = (x(border,t)-x(border,t-dt))/dt
 % border_v: 1x(n-nb+1) vector, border position at each time-step of
 % invasion.
