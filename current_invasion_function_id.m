@@ -1,5 +1,6 @@
 function [final_time1,final_time2,winner,number_ss_1,number_ss_2,...
-    death_count_ss,variance_length,average_density, instant_speed,border_v,position_array]...
+    death_count_ss,variance_length,average_density, instant_speed,...
+    border_v,position_array,number_cells]...
     = current_invasion_function_id(k1,k2,L,N,n,nb,b,d,dt,multiple_cell)
 %%% Inputs:
 % k1,k2 are spring constants for pop1 and pop2 resp., L is right spatial boundary, 
@@ -23,6 +24,8 @@ function [final_time1,final_time2,winner,number_ss_1,number_ss_2,...
 % position_array: 1x(length(snapshots)) cell array. Each cell stores a vector
 % of each cell position at t=snapshot*dt. Final element in each vector is
 % border index.
+% number_cells: 2x(n+1) vector, number of cells at each time-step for each
+% population.
 
 % Set up parameters for simulation.
 x0 = 0;
@@ -226,8 +229,7 @@ variance_length = mean(var_l(burn:end));
 number_ss_1 = mean(number(1,burn:end));
 number_ss_2 = mean(number(2,burn:end));
 death_count_ss = mean(death_count(:,burn:end),'all');
-
-
+number_cells = number;
 
 
 
