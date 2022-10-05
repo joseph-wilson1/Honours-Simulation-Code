@@ -9,23 +9,37 @@ function [final_time1,final_time2,winner,number_ss_1,number_ss_2,...
 
 %%% Outpus:
 % final_time1: Time that population 1 wins, final_time2: time that
-% population 2 wins, winner: flag of which population wins, 1 for pop 1, 2
-% for pop 2, number_ss_1: average number of cells in population 1 during 
-% steady state (after burn), number_ss_2: average number of cells in 
-% population 2 during steady state (after burn), death_count_ss: average 
-% number of dead cells in simulation during steady state, variance_length:
-% average variance in length of cells in simulation, 
+% population 2 wins, 
+% 
+% winner: flag of which population wins, 1 for pop 1, 2 for pop 2 
+% 
+% number_ss_1: average number of cells in population 1 during steady state
+% (after burn)
+% 
+% number_ss_2: average number of cells in population 2 during steady state 
+% (after burn)
+% 
+% death_count_ss: average number of dead cells in simulation during 
+% steady state
+% 
+% variance_length: average variance in length of cells in simulation
+%
 % average_density: 2x(n+1) vector, cell i,j contains average density of 
-% population i at time-step j. avg density calculated N(t)_i/L_i, 
-% instant_speed: 1xn vector, current speed at each time step t,
-% calculated as v(t) = (x(border,t)-x(border,t-dt))/dt, 
+% population i at time-step j. avg density calculated N(t)_i/L_i
+%
+% instant_speed: 1xn vector, current speed at each time step t calculated
+% as v(t) = (x(border,t)-x(border,t-dt))/dt
+%
 % border_v: 1x(n-nb+1) vector, border position at each time-step of
-% invasion.
+% invasion
+%
 % position_array: 1x(length(snapshots)) cell array. Each cell stores a vector
 % of each cell position at t=snapshot*dt. Final element in each vector is
 % border index.
+%
 % number_cells: 2x(n+1) vector, number of cells at each time-step for each
 % population.
+
 
 % Set up parameters for simulation.
 x0 = 0;
@@ -216,7 +230,9 @@ for j=nb+1:n
     end
 
     % Set old border location
-    old_border_loc = xvec(border);
+    if multiple_cell
+        old_border_loc = xvec(border);
+    end
 
     % Save cell positions.
     position_array{j} = [xvec border];

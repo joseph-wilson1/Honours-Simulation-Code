@@ -7,3 +7,4 @@ ave(1) = d_vec(1); ave(end) = d_vec(end);
 for i=2:(length(d_vec)-1)
     ave(1,i) = (d_vec(i-1) + d_vec(i) + d_vec(i+1))/3;
 end
+

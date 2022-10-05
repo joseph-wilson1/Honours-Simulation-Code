@@ -233,7 +233,9 @@ for j=nb+1:n
     end
 
     % Set old border location
-    old_border_loc = xvec(border);
+    if multiple_cell
+        old_border_loc = xvec(border);
+    end
 
     % Save cell positions.
     position_array{j} = [xvec border];
