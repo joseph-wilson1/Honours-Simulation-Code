@@ -3,7 +3,7 @@
 clear all;
 
 % Set up parameters for invasion.
-k1 = 10; N = 50; L = 10;
+k1 = 10; N = 100; L = 20;
 k2 = [20];
 n = 1000000; nb = 100000;
 d = [0.00005]; b = [0.07]; dt = 1e-3;
@@ -143,13 +143,14 @@ legend(strcat("$d~=~$",num2str(d(1)),"$, b~=~$",num2str(b(1))),'',...
 %% Add vline to figure(2)
 figure(2)
 hold on
-xline(320,'LineWidth',1)
+xline(300,'LineWidth',1)
+xlim([100 650])
 %% Modify density plot
 figure(1)
 hold on
 ylim([0 12])
 xline(100,'LineWidth',1)
-xline(320,'LineWidth',1)
+xline(300,'LineWidth',1)
 legend(strcat("Pop. 1, $k_1~ = ~$",num2str(k1)),strcat("Pop. 2, $k_2 ~= ~$",num2str(k2(i))),'','Interpreter','latex')
 
 %% Invasion Speed Plot
@@ -214,42 +215,55 @@ f = find(~cellfun(@isempty,position_array));
 f_end = f(end);
 position_array = position_array(1:f_end);
 clf;
-% f5=figure('Visible','on');
-% figure(f5);
-i=1;
+density_plotting = 1;
+force_plotting = ~density_plotting;
 m = 6;
 t=tiledlayout(m,1);
 % for l=[nb-1000,round(linspace(nb,f_end/2,m-1),0)]
-for l=[nb-1000,nb+(1:m-1)*10000]
+for l=[nb-1000,nb+(1:m-1)*18000]
 % for l=nb:10:f_end
     nexttile
     xvec = position_array{l};
     border_ind = xvec(end);
+    border_pos = xvec(border_ind);
     xvec = xvec(1:end-1);
-%     f = cell_force(xvec,border_ind,k1,k2(end),L/N);
-    avg_dens = rolling_average_density(xvec);
-    hold off
-%     plot(xvec,[f f(end)])
-    plot(xvec,[avg_dens,avg_dens(end)])
-%     ylim([-2 0])
-    ylim([5 10])
-    hold on
-%     plot(xvec(border_ind),f(border_ind),'*r')
+    mvec = midp_cell(xvec); % midpoint of cell
+
+    if density_plotting
+    %     dvec = rolling_average_density(xvec);
+        dvec = density_vector(xvec); % density of cell
+        border_dens = (dvec(border_ind-1)+dvec(border_ind))/2;
+        hold off
+        plot(mvec,dvec,'.')
+        hold on
+        plot(border_pos,border_dens,'*r')
+        ylim([5 10])
+        text(17,8.5,strcat("$t~=~$",num2str(round(l*dt,2))),'Interpreter','latex')
+    end
+    
+    if force_plotting
+        f = cell_force(xvec,border_ind,k1,k2(end),L/N);
+        border_force = (f(border_ind-1)+f(border_ind))/2;
+        hold off
+        plot(mvec,f,'.r')
+        hold on
+        plot(border_pos,border_force,'*k')
+        ylim([0 2.5])
+        text(17,1.8,strcat("$t~=~$",num2str(round(l*dt,2))),'Interpreter','latex')
+    end
+
+
+
     set(gca, 'XTick', []);
-    plot(xvec(border_ind),avg_dens(border_ind),'*r')
-    text(8,8.5,strcat("$t~=~$",num2str(round(l*dt,2))),'Interpreter','latex')
-%     text(8,-0.75,strcat("$t~=~$",num2str(round(l*dt,2))),'Interpreter','latex')
-%     legend(strcat("$t~=~$",num2str(round(l*dt,2))),'','Interpreter','latex') %strcat('$x_{border}~=~$',num2str(xvec(border_ind)))
-%     legend boxoff
-%     xlabel("$x$",Interpreter="latex")
-    ylabel("$\rho(x,t)$",Interpreter="latex")
-%     ylabel("$f(x,t)$",Interpreter="latex")
-%     drawnow()
-    i=i+1;
 end
 t.TileSpacing = 'none';
-set(gca, 'XTick', 0:10)
-xlabel("$x$",Interpreter="latex")
+set(gca, 'XTick', 0:20)
+if density_plotting
+    ylabel(t,"$\rho(x,t)$",Interpreter="latex")
+elseif force_plotting
+    ylabel(t,"$f(x,t)$",Interpreter="latex")
+end
+xlabel(t,"$x$",Interpreter="latex")
 %% Space-time plot (single-cell)
 f = find(~cellfun(@isempty,position_array));
 f_end = f(end);

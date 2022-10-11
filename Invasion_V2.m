@@ -134,7 +134,18 @@ end
 %     'Interpreter','latex')
 
 
-
+%% invasion approximation #1
+a0=0.2;
+v_approx = zeros(1,length(k2));
+for i=1:length(k2)
+    Ni1 = N_approx(L/2,N/2,L/2,k1,b(1)/dt);
+    Ni2 = N_approx(L/2,N/2,L/2,k2(i),b(1)/dt);
+    li1 = L/2/Ni1; li2 = L/2/Ni2;
+    v_approx(1,i) = -k1*(li1-a0) + k2(i)*(li2-a0);
+end
+hold on
+plot(k2,v_approx)
+legend("Numerical","Approximation")
 
 
 
