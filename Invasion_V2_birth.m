@@ -61,7 +61,7 @@ for k_i = 1:length(k2)
         
                 % If no winner, speed = 0.
                 else
-                    s = strcat("No winner, test ",num2str(j),"k_2 = ",num2str(k2(i)));
+                    s = strcat("No winner, test ",num2str(j),"k_2 = ",num2str(k2(k_i)));
                     disp(s)
                     speeds(i,j) = 0;
                 end
@@ -197,7 +197,7 @@ for k_i = 1:length(k2)
         
                 % If no winner, speed = 0.
                 else
-                    s = strcat("No winner, test ",num2str(j),"k_2 = ",num2str(k2(i)));
+                    s = strcat("No winner, test ",num2str(j),"k_2 = ",num2str(k2(k_i)));
                     disp(s)
                     speeds(i,j) = 0;
                 end
@@ -279,7 +279,7 @@ clear all;
 k1 = 20; N = 50; L = 10;
 k2 = 5:0.5:20;
 n = 1000000; nb = 100000;
-d = [0.00005]; b = [0.07]; dt = 1e-3;
+d = [0.00005,0.0002]; b = [0.03,0.07]; dt = 1e-3;
 % d = 0.000000005; b = 0.0000000005; dt = 1e-3;
 id = 0;
 
@@ -361,7 +361,7 @@ for b_i = 1:length(b)
             number_ave2 = mean(number_ave2,1);
             
             if densityfit_speed_pos
-        %%
+
                 % Plot average density vs time.
                 [~,j1] = find(density_ave1);
                 endj1 = j1(end);
@@ -375,7 +375,7 @@ for b_i = 1:length(b)
                 xlim([dt max([endj1,endj2])*dt])
                 ylim([0 20])
                 legend(strcat("Pop. 1, $k_1~ = ~$",num2str(k1)," $~k_2 ~= ~$",num2str(k2(i))),strcat("Pop. 2, $k_1~ = ~$",num2str(k1),", $k_2 ~= ~$",num2str(k2(i))),'Interpreter','latex')
-        %%
+
                 % Plot border position
                 figure(2)
                 speed_endj = endj1-nb;
@@ -408,7 +408,7 @@ legend(strcat("$b=$",num2str(b(1)),", $d=$",num2str(d(1))),strcat("$b=$",...
 
 
 
-%% Invasion Speed (as a function of parameters) - d (gradual death)
+%Invasion Speed (as a function of parameters) - d (gradual death)
 'Start'
 clear all;
 
@@ -498,7 +498,7 @@ for k_i = 1:length(k2)
             number_ave2 = mean(number_ave2,1);
             
             if densityfit_speed_pos
-        %%
+
                 % Plot average density vs time.
                 [~,j1] = find(density_ave1);
                 endj1 = j1(end);
@@ -512,7 +512,7 @@ for k_i = 1:length(k2)
                 xlim([dt max([endj1,endj2])*dt])
                 ylim([0 20])
                 legend(strcat("Pop. 1, $k_1~ = ~$",num2str(k1)," $~k_2 ~= ~$",num2str(k2(i))),strcat("Pop. 2, $k_1~ = ~$",num2str(k1),", $k_2 ~= ~$",num2str(k2(i))),'Interpreter','latex')
-        %%
+
                 % Plot border position
                 figure(2)
                 speed_endj = endj1-nb;
