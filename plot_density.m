@@ -1,4 +1,5 @@
 function plot_density(density,n,dt,multiple_cell,k1,k2)
+% FUNCTION NOT IN USE.
     figure(3)
     clf;
     if multiple_cell

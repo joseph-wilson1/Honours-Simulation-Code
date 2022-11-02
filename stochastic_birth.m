@@ -1,4 +1,6 @@
-function [xvec,kvec,avec,dead,N,border,L_index] = stochastic_birth(xvec,length_tol,b,kvec,avec,dead,multiple_cell,border,t)    
+function [xvec,kvec,avec,dead,N,border,L_index] = ...
+    stochastic_birth(xvec,length_tol,b,kvec,avec,dead,multiple_cell,border,t)    
+    % Function to implement birth mechanic.
     N = length(xvec)-1;
 
     [Lt,L_index] = L_t(xvec,length_tol); %Number of and vector of indices of 

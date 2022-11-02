@@ -1,5 +1,6 @@
 function [xvec_new,kvec,avec,N,border] = stochastic_death2(N,d,x,k,a,border)
-    
+    % Function to implement instant death mechanic in each time step.
+
     x_old = x;
     k_old = k;
     a_old = a;

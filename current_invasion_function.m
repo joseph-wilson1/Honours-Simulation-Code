@@ -2,6 +2,7 @@ function [final_time1,final_time2,winner,number_ss_1,number_ss_2,...
     death_count_ss,variance_length,average_density,instant_speed,...
     border_v,position_array,number_cells] = ...
     current_invasion_function(k1,k2,L,N,n,nb,b,d,dt,multiple_cell)
+%%% Function to run simulation with gradual death option.
 
 %%% Inputs:
 % k1,k2 are spring constants for pop1 and pop2 resp., L is right spatial boundary, 
@@ -174,14 +175,6 @@ for j=nb+1:n
     xvec_new = border_test(xvec_new); % Position check
     [xvec_new,kvec,avec,dead,~,border] = length_test(xvec_new,kvec,avec,dead,length_tol,border); % Length test (for removal)
     xvec=xvec_new;
-
-%     % Density Snapshot
-%     if abs(j - snapshots(p)) < tol
-%         position_array{p} = xvec;
-%         if~abs(p-length(snapshots))<tol
-%             p=p+1;
-%         end
-%     end
 
     % Decide if a population has 'won'. Record time of winning invasion.
     if abs(border-1) < tol

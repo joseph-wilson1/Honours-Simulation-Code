@@ -1,4 +1,6 @@
 function xvec_new = border_test(x)
+% Function to check if cell boundary positions overlap i.e overshoot. Fix
+% if so.
 N = length(x)-1;
 x_old = x;
 for i=2:N

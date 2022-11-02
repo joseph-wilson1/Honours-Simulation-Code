@@ -1,11 +1,12 @@
 function plot_cell(xvec,border,k1,k2,x0,L,multiple_cell,j,dt)
+% Function to plot cell positions at each time step j*dt. 
 
     N = length(xvec)-1;
     if multiple_cell
         hold on
         Ys = zeros(length(xvec(1:border)),1) + j*dt;
         plot(xvec(1:border),Ys,'b.')
-%         title(strcat("Heterogeneous Cell Population - k1 = ",num2str(k1)," k2 = ",num2str(k2)))
+        title(strcat("Heterogeneous Cell Population - k1 = ",num2str(k1)," k2 = ",num2str(k2)))
         xlabel("x")
         ylabel("t")
         xlim([x0 L])
@@ -18,10 +19,10 @@ function plot_cell(xvec,border,k1,k2,x0,L,multiple_cell,j,dt)
         hold on
         Ys = zeros(length(xvec),1) + j*dt;
         plot(xvec,Ys,'b.')
-%         title(strcat("Homogenous Cell Population - k = ",num2str(k1)))
+        title(strcat("Homogenous Cell Population - k = ",num2str(k1)))
         xlabel("x")
         ylabel("t")
         xlim([x0 L])
         drawnow
-        end
+    end
 end

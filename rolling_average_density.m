@@ -1,5 +1,5 @@
 function ave = rolling_average_density(xvec)
-
+% Function to find rolling average density profile. (NOT IN USE).
 N = length(xvec)-1;
 d_vec = density_vector(xvec);
 ave = zeros(1,N);

@@ -1,5 +1,5 @@
 function plot_dead(death_count,n,dt,k1,k2,multiple_cell)
-%Plot Dead Cells
+%Plot Dead Cells. NOT IN USE.
 figure(4)
 clf;
 if multiple_cell

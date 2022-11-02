@@ -1,4 +1,5 @@
 function f = cell_force(xvec,border,k1,k2,a0)
+% Function to calculate force each cell exerts outward.
     kvec = zeros(1,length(xvec)-1);
     kvec(1,1:border-1) = k1;
     kvec(1,border:end) = k2;

@@ -1,6 +1,7 @@
 function [xvec_new,kvec,avec,deadvec,N,border] = length_test(x,k,a,dead,l_tol,border)
 %Function that discerns wether or not a cell is small enough to be removed,
-%and then removes it from the simulation, along with its attributes.
+%and then removes it from the simulation, along with its attributes. For
+%gradual death option.
 
 N = length(x)-1; %Number of cells.
 x_old = x;

@@ -5,6 +5,7 @@ function x_new = hookfun2(x,k,a,dt,eta)
 m = dt/eta;
 k = [k 0];
 a = [a 0];
+% Solve new position simultaneously
 x_new = m*k.*circshift(x,-1) + (1 - m*k - m*circshift(k,1)).*x ...
     + m*circshift(k,1).*circshift(x,1) - m*k.*a ...
     + m*circshift(k,1).*circshift(a,1);

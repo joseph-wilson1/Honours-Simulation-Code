@@ -1,4 +1,5 @@
 function [Lt,L_index] = L_t(xvec,l_birth)
+% Find cells whose length excees l_birth.
 N = length(xvec)-1; %Number of cells.
 Lt = 0;
 L_index = [];

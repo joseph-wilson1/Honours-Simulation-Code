@@ -1,5 +1,6 @@
 function [kvec,avec,dead] = stochastic_death(N,d,kvec,avec,dead,k_death)
-
+    % Function to implement gradual death mechanic in each time step.
+    
     %Stochastic Process - Death
     cells = 1:N;
     r = rand(N,1);

@@ -1,4 +1,5 @@
 function mvec = midp_cell(xvec)
+% Calculate midpoint of cells.
     N=length(xvec);
     mvec=zeros(1,N-1);
     for i=1:N-1
