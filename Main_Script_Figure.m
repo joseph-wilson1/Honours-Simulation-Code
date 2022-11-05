@@ -4,7 +4,7 @@ clear all;
 
 % Set up parameters for invasion.
 k1 = 10; N = 50; L = 10;
-k2 = [10,20];
+k2 = 15;
 n = 1000000; nb = 100000;
 d = [0.00005,0.0002]; b = [0.03,0.07]; dt = 1e-3;
 % d = 0.000000005; b = 0.0000000005; dt = 1e-3;
@@ -12,7 +12,7 @@ id = 1;
 
 % Set up parameters for testing.
 
-tests = 1; % Number of tests
+tests = 20; % Number of tests
 speeds = zeros(length(k2),tests); % Invasion speed for k2(i) in test j
 death_count = zeros(length(k2),tests); % Can be used to check no. of dead cells.
 speed_ave = zeros(length(k2),1); % Average invasion speed for k2(i)

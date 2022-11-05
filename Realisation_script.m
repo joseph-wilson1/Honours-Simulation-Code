@@ -3,9 +3,9 @@
 clear all;
 
 % Set up parameters for simulation.
-k1 = 5; N = 50; L = 10; k2 = 5;
-n = 10000; nb = 1000;
-d = 0.0001; b = 0.7; dt = 1e-2;
+k1 = 10; N = 50; L = 10; k2 = 10;
+n = 10000; nb = 1;
+d = 0.00005; b = 0.07; dt = 1e-3;
 id = 0;
 
 number_ave1 = zeros(1,n+1); % Number of cells vs time (1)
@@ -30,6 +30,8 @@ else
 end
 number1 = number_cells(1,:);
 mean_number = mean(number1(1,round(n/2):n));
+%%
+figure(3)
 hold off
 plot((0:n)*dt,number1)
 hold on
